@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { DrawerCustom } from '../../components/DrawerCustom';
@@ -90,6 +91,8 @@ export function ProductsPage() {
 
       return newCartItems;
     });
+
+    toast.success(`${product.name} removido do carrinho!`);
   }
 
   return (

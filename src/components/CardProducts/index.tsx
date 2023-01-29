@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -48,7 +49,10 @@ export function CardProducts({ product, onAddToCart }: CardProductsProps) {
         <ButtonBuy
           variant="text"
           startIcon={<LocalMallIcon />}
-          onClick={() => onAddToCart(product)}
+          onClick={() => { 
+            onAddToCart(product); 
+            toast.success(`${product.name} adicionado ao carrinho!`); 
+          }}
         >
           COMPRAR
         </ButtonBuy>
