@@ -1,37 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { DrawerCustom } from '../../components/DrawerCustom';
 import { CardProducts } from '../../components/CardProducts'
-import { useAppDispatch, useAppSelector } from '../../helpers';
 import { SkeletonProducts } from '../../components/SkeletonProducts';
 import { Navbar } from '../../components/Navbar';
 import { CartItem } from '../../types/CartItem';
-import { Product } from '../../types/Product';
-import { getProducts } from '../../services';
+import { Character } from '../../services/types';
+import { useGetCharacters } from './useGetCharacters';
 
 export function ProductsPage() {
-  const dispatch = useAppDispatch();
-  const { data: { products }, loading } = useAppSelector((state) => state.product);
+  const { characters, loadingCharacters } = useGetCharacters();
   const [openDrawer, setOpenDrawer] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const cartQuantity = cartItems.reduce((acc, item) => {
     return acc + item.quantity;
   }, 0);
-  
-  useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
 
   function toggleDrawer() {
     setOpenDrawer(!openDrawer);
   }
 
-  function handleAddToCart(product: Product ) {
+  function handleAddToCart(product: Character) {
     setCartItems((prevState) => {
       const itemIndex = prevState.findIndex(
-        cartItem => cartItem.product.id === product.id
+        cartItem => cartItem.product.id === product._id
       );
 
       if (itemIndex < 0) {
@@ -52,10 +46,10 @@ export function ProductsPage() {
     });
   }
 
-  function handleRemoveToCart(product: Product) {
+  function handleRemoveToCart(product: Character) {
     setCartItems((prevState) => {
       const itemIndex = prevState.findIndex(
-        cartItem => cartItem.product.id === product.id
+        cartItem => cartItem.product.id === product._id
       );
       const item = prevState[itemIndex];
       const newCartItems = [...prevState];
@@ -75,10 +69,10 @@ export function ProductsPage() {
     });
   }
 
-  function handleDeleteProductToCart(product: Product) {
+  function handleDeleteProductToCart(product: Character) {
     setCartItems((prevState) => {
       const itemIndex = prevState.findIndex(
-        cartItem => cartItem.product.id === product.id
+        cartItem => cartItem.product.id === product._id
       );
       const item = prevState[itemIndex];
       const newCartItems = [...prevState];
@@ -107,13 +101,13 @@ export function ProductsPage() {
       />
       <Navbar openDrawer={toggleDrawer} cartQuantity={cartQuantity} />
       <Container maxWidth="lg" sx={{ marginTop: '4rem' }}>
-        {loading ? (
+        {loadingCharacters ? (
           <SkeletonProducts />
         ) : (
           <Grid container spacing={3}>
-            {products.map((product) => (
-              <Grid item xs={12} sm={6} md={3} key={product.id}>
-                <CardProducts product={product} onAddToCart={handleAddToCart} />
+            {characters && characters.map((item) => (
+              <Grid item xs={12} sm={6} md={3} key={item._id}>
+                <CardProducts character={item} onAddToCart={handleAddToCart} />
               </Grid>
             ))}
           </Grid>

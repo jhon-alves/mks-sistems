@@ -1,14 +1,16 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
 import { api } from '../helpers/api';
+import { KEYS  } from '../config';
+import { CharactersResponse } from './types';
 
-export const getProducts = createAsyncThunk(
-  "products/getProducts",
-  async (data, thunkApi) => {
+export const services = {
+  getCharacters
+};
+
+async function getCharacters() {
     try {
-      const response = await api.get(`/products?page=1&rows=8&sortBy=id&orderBy=ASC`);
-      return response.data
-    } catch (error: any) {
-      return thunkApi.rejectWithValue(error.message);
+      const { data } = await api.get<CharactersResponse>('character');
+      return data;
+    } catch (error) {
+      console.log('ERRO AO LISTAR',  error);
     }
   }
-);

@@ -14,34 +14,34 @@ import {
   ButtonBuy
 } from './styles';
 import { formatCurrency } from '../../helpers';
-import { Product } from '../../types/Product';
+import { Character } from '../../services/types';
 
 interface CardProductsProps {
-  product: Product | null;
-  onAddToCart: (product: Product) => void;
+  character: Character;
+  onAddToCart: (product: Character) => void;
 }
 
-export function CardProducts({ product, onAddToCart }: CardProductsProps) {
+export function CardProducts({ character, onAddToCart }: CardProductsProps) {
   
-  if (!product) {
+  if (!character) {
     return null;
   }
 
   return (
     <Card sx={{ borderRadius: 4 }}>
       <CardActionArea>
-        <Box display="flex" alignItems="center" justifyContent="center" height="300px">
-          <CardMedia component="img" image={product.photo} />
+        <Box height="250px">
+          <CardMedia component="img" image={character.imageUrl} height={250} style={{ objectFit: 'cover' }} />
         </Box>
         <CardContent>
           <Box display="flex" alignItems="center" justifyContent="space-between" height="50px">
             <ProductName>
-              {product.name}
+              {character.name}
             </ProductName>
-            <Chip label={formatCurrency(product.price)} />
+            <Chip label={formatCurrency(1000)} />
           </Box>
           <ProductDescription variant="body2" color="text.secondary">
-            {product.description}
+            {/* {character.description} */}
           </ProductDescription>
         </CardContent>
       </CardActionArea>
@@ -50,8 +50,8 @@ export function CardProducts({ product, onAddToCart }: CardProductsProps) {
           variant="text"
           startIcon={<LocalMallIcon />}
           onClick={() => { 
-            onAddToCart(product); 
-            toast.success(`${product.name} adicionado ao carrinho!`); 
+            onAddToCart(character); 
+            toast.success(`${character.name} adicionado ao carrinho!`); 
           }}
         >
           COMPRAR

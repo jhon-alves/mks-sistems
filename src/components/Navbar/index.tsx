@@ -12,7 +12,7 @@ export function Navbar({ openDrawer, cartQuantity }: NavbarProps) {
     <AppBar position="sticky" elevation={0}>
       <Container maxWidth="lg">
         <Toolbar>
-          <Logo>MKS <span>Sistemas</span></Logo>
+          <Logo>Zaply</Logo>
           <ButtonCart
             data-testid="cart-btn"
             size="large"
